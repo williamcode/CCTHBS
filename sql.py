@@ -1,7 +1,7 @@
 # encoding=utf-8 
 import MySQLdb
 import pymssql
-from Demos.security.sspi.validate_password import password
+
 class MYSQL():
     def __init__(self):
         self.host='10.9.1.52'
@@ -41,14 +41,14 @@ class MYSQL():
 class MSSQL():
     def __init__(self):
         self.host='10.9.1.52'
-        self.port=3316
-        self.user='root'
-        self.passwd='htoa8000'
-        self.db='oa8000'
+        #self.port=3
+        self.user='sa'
+        self.passwd='sa'
+        self.db='CCTHBS'
         
     def __connection(self):
         try:
-            self.cnn=pymssql.connect(host = self.host,user=self.user,password=self.passwd,database=self.db)
+            self.cnn=pymssql.connect(host = self.host,user=self.user,password=self.passwd,database=self.db,charset='utf8')
         except:
             pass
 
@@ -70,3 +70,5 @@ class MSSQL():
             self.cnn.cursor().execute(sql)
             self.cnn.commit()
             self.cnn.close()
+            
+   
