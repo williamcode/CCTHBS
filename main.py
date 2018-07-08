@@ -12,6 +12,10 @@ from sql import MSSQL  #,MYSQL
 #import sqlite3
 from Operator import itemgetter
 
+
+
+
+
 def main():
     y=2018
     m=6
@@ -20,8 +24,8 @@ def main():
 
     msquer=MSSQL()
 
-    bank_other_sql ="""select 'bko', a.日期,isnull(a.外币币种,''),isnull(a.外币金额,0),isnull(a.本位币金额,0),a.借方科目,b.账套 as 借方账套,b.币种 as 借方币种,a.贷方科目,c.账套 as 贷方账套,c.币种 as 贷方币种,a.备注
-            from 银行其他收支 a inner join 科目表 b on a.借方科目=b.科目名称  inner join 科目表 c on a.贷方科目=c.科目名称   where month(a.日期)=%d and year(a.日期)=%d
+    bank_other_sql ="""select 'bko', a.日期,isnull(a.外币币种,''),isnull(a.外币金额,0),isnull(a.本位币金额,0),a.借方科目,b.账套 as 借方账套,b.币种 as 借方币种,a.贷方科目,c.账套 as 贷方账套,c.币种 as 贷方币种,
+    a.备注,''  from 银行其他收支 a inner join 科目表 b on a.借方科目=b.科目名称  inner join 科目表 c on a.贷方科目=c.科目名称   where month(a.日期)=%d and year(a.日期)=%d
         """
     bank_other_re=msquer.Sqlexe(bank_other_sql%(m,y))
 
@@ -70,12 +74,27 @@ def main():
 
     result=sorted(sql,key=itemgetter(1,12))
 
-    #formate the result 日期，摘要，科目，币种，记账币金额，外币金额，汇率，客商项目（代码，如有），对方科目 
-    bko={}
-    ap={}
-    ar={}
-    br={}
-    bp={}
+    #formate the result 日期，摘要，科目，币种，记账币金额，外币金额，汇率，客商项目（代码，如有），对方科目
+    unit={1:'深圳市华讯方舟企业服务有限公司'，
+          2：'华讯方舟企业服务有限公司'，
+          3：'湖北典伦进出口贸易有限公司'
+          }
+
+    bko={
+
+        }
+    ap={
+
+        }
+    ar={
+
+        }
+    br={
+
+        }
+    bp={
+
+        }
 
 
 if __name__=='__main__':
