@@ -39,7 +39,7 @@ def main():
 
     ap_sql_re = msquer.Sqlexe(ap_sql%(m,y))
 
-    for ap_sql_re:
+    if ap_sql_re:
         sql.extend(ap_sql_re)
         # type,日期，币种，外币金额，本位币金额，‘’，账套，‘’，‘’，‘’，‘’，合同号，供应商
 
