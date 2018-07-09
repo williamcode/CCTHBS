@@ -4,11 +4,11 @@ import pymssql
 
 class MYSQL():
     def __init__(self):
-        self.host='10.9.1.52'
-        self.port=3316
-        self.user='root'
-        self.passwd='htoa8000'
-        self.db='oa8000'
+        self.host=''
+        self.port=
+        self.user=''
+        self.passwd=''
+        self.db=''
 
 
     def __connection(self):
