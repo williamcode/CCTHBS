@@ -10,7 +10,7 @@
 
 from sql import MSSQL  #,MYSQL
 #import sqlite3
-from Operator import itemgetter
+from operator import itemgetter
 
 
 
@@ -80,21 +80,7 @@ def main():
           3：'湖北典伦进出口贸易有限公司'
           }
 
-    bko={
 
-        }
-    ap={
-
-        }
-    ar={
-
-        }
-    br={
-
-        }
-    bp={
-
-        }
 
 
 if __name__=='__main__':
