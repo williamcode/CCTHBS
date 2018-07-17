@@ -8,26 +8,23 @@
 #程序摘要：获取excel系统及OA系统业务数据，形成用友T3可导入的数据格式，可以excel文档，也可以xml     #
 #############################################################################################1
 
-from sql import MSSQL  #,MYSQL
+from sql import MSSQL , Voucher
 #import sqlite3
 from operator import itemgetter
-
-
-
-
+#from __builtin__ import str
 
 def main():
     y=2018
-    m=6
+    m=7
     sql=[]
     #list类型，日期，外币币种，比外金额，本位币金额，借方科目，借方单位，借方科目币种，贷方科目，贷方单位，贷方科目币种，备注，ref)
 
-    msquer=MSSQL()
+    msquery=MSSQL()
 
     bank_other_sql ="""select 'bko', a.日期,isnull(a.外币币种,''),isnull(a.外币金额,0),isnull(a.本位币金额,0),a.借方科目,b.账套 as 借方账套,b.币种 as 借方币种,a.贷方科目,c.账套 as 贷方账套,c.币种 as 贷方币种,
     a.备注,''  from 银行其他收支 a inner join 科目表 b on a.借方科目=b.科目名称  inner join 科目表 c on a.贷方科目=c.科目名称   where month(a.日期)=%d and year(a.日期)=%d
         """
-    bank_other_re=msquer.Sqlexe(bank_other_sql%(m,y))
+    bank_other_re=msquery.Sqlexe(bank_other_sql%(m,y))
 
     if bank_other_re:
         #print _bank_other_re
@@ -37,7 +34,7 @@ def main():
     ap_sql = """select 'ap',日期,case when 币种='CNY' then '' else 币种 end as cur ,case when 币种='CNY' then 0 else 不含税金额 end as famt,case when 币种='CNY' then  不含税金额  else 0 end as amt,
                 '',账套,'','','','',合同号, 供应商     from 采购收货_主表    where month(日期)=%d and year(日期)=%d    """
 
-    ap_sql_re = msquer.Sqlexe(ap_sql%(m,y))
+    ap_sql_re = msquery.Sqlexe(ap_sql%(m,y))
 
     if ap_sql_re:
         sql.extend(ap_sql_re)
@@ -57,7 +54,7 @@ def main():
                 from 资金收取_主表 a inner join 资金收取_明细 b  on a.excelserverrcid=b.excelserverrcid where month(a.日期)=%d and year(a.日期)=%d
             """
     bank_rec_sql_re = msquery.Sqlexe(bank_rec_sql%(m,y))
-
+    
     if bank_rec_sql_re:
         sql.extend(bank_rec_sql_re)
         # type,日期，币种，手续费，银行金额，收款银行，账套，‘’，金额（字符型），客户,收款币种，合同号，b.excelserverrcid
@@ -73,14 +70,21 @@ def main():
         # type,日期，币种，外币金额，本位币金额，供应商，账套，‘’，支付银行，‘’,‘’，合同号，‘’
 
     result=sorted(sql,key=itemgetter(1,12))
-
-    #formate the result 日期，摘要，科目，币种，记账币金额，外币金额，汇率，客商项目（代码，如有），对方科目
-    unit={1:'深圳市华讯方舟企业服务有限公司'，
-          2：'华讯方舟企业服务有限公司'，
-          3：'湖北典伦进出口贸易有限公司'
+    #print result[0]
+   
+    #formate the result 日期，摘要，科目，币种，记账币金额，外币金额，对方科目
+    unit={1:'深圳市华讯方舟企业服务有限公司'.decode('utf-8'),
+          2:'华讯方舟企业服务有限公司'.decode('utf-8'),
+          3:'湖北典伦进出口贸易有限公司'.decode('utf-8')
           }
-
-
+    voucher_make=Voucher()
+    for _re in result:
+            
+        re=voucher_make.voucher_make(_re,unit[1])
+        if re:
+            for detail in re:
+                
+        
 
 
 if __name__=='__main__':
