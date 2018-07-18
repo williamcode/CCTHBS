@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
-import MySQLdb
+#import MySQLdb
 import pymssql
 
-class MYSQL():
+'''class MYSQL():
     def __init__(self):
         self.host=''
         self.port=''
@@ -35,7 +35,7 @@ class MYSQL():
             self.cnn.cursor().execute(sql)
             self.cnn.commit()
             self.cnn.close()
-
+'''
 
 
 class MSSQL():
@@ -95,9 +95,9 @@ class Voucher():
         
         if sql_re[6]==unit or sql_re[9]==unit:
             result=[]
-            temp= sql_re[1],sql_re[11],sql_re[5] if sql_re[6]==unit else sql_re[6],sql_re[7],sql_re[4],sql_re[3],sql_re[8] if sql_re[9]==unit else sql_re[9],'dr'
+            temp= sql_re[1],sql_re[11],sql_re[5] if sql_re[6]==unit else sql_re[6],sql_re[7],sql_re[4],sql_re[3],sql_re[8] if sql_re[9]==unit else sql_re[9],'dr',sql_re[0]
             result.append(temp)
-            temp= sql_re[1],sql_re[11],sql_re[8] if sql_re[9]==unit else sql_re[9],sql_re[10],sql_re[4],sql_re[3],sql_re[5] if sql_re[6]==unit else sql_re[6],'cr'
+            temp= sql_re[1],sql_re[11],sql_re[8] if sql_re[9]==unit else sql_re[9],sql_re[10],sql_re[4],sql_re[3],sql_re[5] if sql_re[6]==unit else sql_re[6],'cr',sql_re[0]
             result.append(temp)
 
             return result
@@ -105,9 +105,9 @@ class Voucher():
     def ap(sel,sql_re,unit):
         if sql_re[6]==unit:
             result=[]
-            temp=sql_re[1],sql_re[11],'1405',sql_re[2],sql_re[4],sql_re[3],sql_re[12],'dr'
+            temp=sql_re[1],sql_re[11],'1405',sql_re[2],sql_re[4],sql_re[3],sql_re[12],'dr',sql_re[0]
             result.append(temp)
-            temp=sql_re[1],sql_re[11],sql_re[12],sql_re[2],sql_re[4],sql_re[3],'1405','cr'
+            temp=sql_re[1],sql_re[11],sql_re[12],sql_re[2],sql_re[4],sql_re[3],'1405','cr',sql_re[0]
             result.append(temp)
             return result
 
@@ -115,29 +115,30 @@ class Voucher():
     def ar(self,sql_re,unit):
         if sql_re[6]==unit:
             result=[]
-            temp=sql_re[1],sql_re[11],sql_re[12],sql_re[2],sql_re[4],sql_re[3],sql_re[6],'dr'
+            temp=sql_re[1],sql_re[11],sql_re[12],sql_re[2],sql_re[4],sql_re[3],sql_re[6],'dr',sql_re[0]
             result.append(temp)
-            temp=sql_re[1],sql_re[11],sql_re[6],sql_re[2],sql_re[4],sql_re[3],sql_re[12],'cr'
+            temp=sql_re[1],sql_re[11],sql_re[6],sql_re[2],sql_re[4],sql_re[3],sql_re[12],'cr',sql_re[0]
             result.append(temp)
             return result
     # type,日期，币种，手续费，银行金额，收款银行，账套，‘’，金额（字符型），客户,收款币种，合同号，b.excelserverrcid
     def bank_receive(self,sql_re,unit):
         if sql_re[6]==unit:
             result=[]
-            temp=sql_re[1],sql_re[11],sql_re[5],sql_re[2],sql_re[4],sql_re[4],sql_re[9],'dr'
+            temp=sql_re[1],sql_re[11],sql_re[5],sql_re[2],sql_re[4],sql_re[4],sql_re[9],'dr',sql_re[0]
             result.append(temp)
-            temp=sql_re[1],'续费',sql_re[5],sql_re[2],sql_re[3],sql_re[3],sql_re[9],'dr'
+            temp=sql_re[1],'续费',sql_re[5],sql_re[2],sql_re[3],sql_re[3],sql_re[9],'dr',sql_re[0]
             result.append(temp)
-            temp=sql_re[1],sql_re[11],sql_re[9],sql_re[2],sql_re[8],sql_re[8],sql_re[5],'cr'
+            temp=sql_re[1],sql_re[11],sql_re[9],sql_re[2],sql_re[8],sql_re[8],sql_re[5],'cr',sql_re[0]
             result.append(temp)
             return result
 
     # type,日期，币种，外币金额，本位币金额，供应商，账套，‘’，支付银行，‘’,‘’，合同号，‘’
     def bank_pay(self,sql_re,unit):
+        #print(sql_re[6]==unit)
         if sql_re[6]==unit:
             result=[]
-            temp=sql_re[1],sql_re[11],sql_re[5],sql_re[2],sql_re[4],sql_re[3],sql_re[8],'dr'
+            temp=sql_re[1],sql_re[11],sql_re[5],sql_re[2],sql_re[4],sql_re[3],sql_re[8],'dr',sql_re[0]
             result.append(temp)
-            temp=sql_re[1],sql_re[11],sql_re[8],sql_re[2],sql_re[4],sql_re[3],sql_re[5],'cr'
+            temp=sql_re[1],sql_re[11],sql_re[8],sql_re[2],sql_re[4],sql_re[3],sql_re[5],'cr',sql_re[0]
             result.append(temp)
             return result
