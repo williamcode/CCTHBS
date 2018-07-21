@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+#encoding:utf-8
 #############################################################################################
 #导入所需信息                                                                                #
 #借方发生额：日期，摘要，科目，币种，记账币金额，外币金额，汇率，客商项目（代码，如有），对方科目    #
@@ -11,7 +11,33 @@
 from sql import MSSQL , Voucher
 #import sqlite3
 from operator import itemgetter
-#from __builtin__ import str
+import xlwt
+
+
+def account_format(list,customer,vendor,ar,ap,km):
+    if customer.get(list[2]) and list[8]=='ar':
+        list[2]=ar["USD"] if list[3]=="USD" else ar["CNY"]
+        list.append(customer[list[2]])
+    if  customer.get(list[6]):
+        if list[8] in ("bko","br"):
+            list[2]=ar["USD"] if list[3]=="USD" else ar["CNY"]
+    if  vendor.get(list[2]):
+        if list[8] in ["bko","bp"]:
+             list[2]=ap["USD"] if list[3]=="USD" else ap["CNY"]
+             list.append(vendor[list[2]])
+    if vendor.get(list[6]) and list[8]=="ap":
+        list[6]=ap["USD"] if list[3]=="USD" else ap["CNY"]
+                
+    
+    
+    if km.get(list[2]):
+        list[2]=km[list[2]]
+    if km.get(list[6]):
+        list[6]=km[list[6]]
+    return list    
+    
+        
+        
 
 def main():
     y=2018
@@ -19,7 +45,7 @@ def main():
     sql=[]
     #list类型，日期，外币币种，比外金额，本位币金额，借方科目，借方单位，借方科目币种，贷方科目，贷方单位，贷方科目币种，备注，ref)
 
-    msquery=MSSQL()
+    msquery=MSSQL(host='10.9.1.52',user='sa',passwd='sa',db='CCTHBS')
 
     bank_other_sql ="""select 'bko', a.日期,isnull(a.外币币种,''),isnull(a.外币金额,0),isnull(a.本位币金额,0),a.借方科目,b.账套 as 借方账套,b.币种 as 借方币种,a.贷方科目,c.账套 as 贷方账套,c.币种 as 贷方币种,
     a.备注,''  from 银行其他收支 a inner join 科目表 b on a.借方科目=b.科目名称  inner join 科目表 c on a.贷方科目=c.科目名称   where month(a.日期)=%d and year(a.日期)=%d
@@ -83,18 +109,47 @@ def main():
     sql_gys='select cvenname,cvencode from vendor       '
     dict_km=dict(msquery.Sqlexe(sql_km))
     msquery.db='UFDATA_003_2018'
+    re=msquery.Sqlexe(sql_kh)
+    #===========================================================================
+    # for r in re:
+    #     print(r)
+    #===========================================================================
+    
     dict_kh_sz=dict(msquery.Sqlexe(sql_kh))
     dict_gys_sz=dict(msquery.Sqlexe(sql_gys))
+    ap_sz = {"USD":"220202","CNY":"220201"}
+    ar_sz = {"USD":"112202","CNY":"112201"}
+    ap_hk = {"USD":"220201","CNY":"220202"}
+    ar_hk = {"USD":"112201","CNY":"112202"}
+    
     
     voucher_make=Voucher()
+    wb=xlwt.Workbook()
+    ws=wb.add_sheet('reslut')
+    row=1
+    code_no=0
+    code_row=1
+    mark=""
+    
     for _re in result:
-        #print(_re)
+          
         re=voucher_make.voucher_make(_re,unit[1])
+          
         if re:
             for detail in re:
-                pass
-                print(detail)
-                #re[0][0].year
+                de=account_format(detail, dict_kh_sz, dict_gys_sz, ar_sz, ap_sz, dict_km)
+                ws.writ(row,1,de[0].year)
+                ws.writ(row,1,"记") 
+                ws.writ(row,1,'1') 
+                
+                ws.writ(row,1,de[0].year) 
+                ws.writ(row,1,de[0].year) 
+                ws.writ(row,1,de[0].year) 
+                ws.writ(row,1,de[0].year) 
+                
+                  
+                print(de)
+                  
 
 
 

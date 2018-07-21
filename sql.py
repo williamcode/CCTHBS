@@ -39,12 +39,12 @@ import pymssql
 
 
 class MSSQL():
-    def __init__(self):
-        self.host='10.9.1.52'
+    def __init__(self,host,user,passwd,db):
+        self.host=host #'10.9.1.52'
         #self.port=3
-        self.user='sa'
-        self.passwd='sa'
-        self.db='CCTHBS'
+        self.user=user
+        self.passwd=passwd
+        self.db=db
 
     def __connection(self):
         try:
@@ -95,9 +95,9 @@ class Voucher():
         
         if sql_re[6]==unit or sql_re[9]==unit:
             result=[]
-            temp= sql_re[1],sql_re[11],sql_re[5] if sql_re[6]==unit else sql_re[6],sql_re[7],sql_re[4],sql_re[3],sql_re[8] if sql_re[9]==unit else sql_re[9],'dr',sql_re[0]
+            temp= [sql_re[1],sql_re[11],sql_re[5] if sql_re[6]==unit else sql_re[6],sql_re[7],sql_re[4],sql_re[3],sql_re[8] if sql_re[9]==unit else sql_re[9],'dr',sql_re[0]]
             result.append(temp)
-            temp= sql_re[1],sql_re[11],sql_re[8] if sql_re[9]==unit else sql_re[9],sql_re[10],sql_re[4],sql_re[3],sql_re[5] if sql_re[6]==unit else sql_re[6],'cr',sql_re[0]
+            temp= [sql_re[1],sql_re[11],sql_re[8] if sql_re[9]==unit else sql_re[9],sql_re[10],sql_re[4],sql_re[3],sql_re[5] if sql_re[6]==unit else sql_re[6],'cr',sql_re[0]]
             result.append(temp)
 
             return result
@@ -105,9 +105,9 @@ class Voucher():
     def ap(sel,sql_re,unit):
         if sql_re[6]==unit:
             result=[]
-            temp=sql_re[1],sql_re[11],'1405',sql_re[2],sql_re[4],sql_re[3],sql_re[12],'dr',sql_re[0]
+            temp=[sql_re[1],sql_re[11],'1405',sql_re[2],sql_re[4],sql_re[3],sql_re[12],'dr',sql_re[0]]
             result.append(temp)
-            temp=sql_re[1],sql_re[11],sql_re[12],sql_re[2],sql_re[4],sql_re[3],'1405','cr',sql_re[0]
+            temp=[sql_re[1],sql_re[11],sql_re[12],sql_re[2],sql_re[4],sql_re[3],'1405','cr',sql_re[0]]
             result.append(temp)
             return result
 
@@ -115,20 +115,20 @@ class Voucher():
     def ar(self,sql_re,unit):
         if sql_re[6]==unit:
             result=[]
-            temp=sql_re[1],sql_re[11],sql_re[12],sql_re[2],sql_re[4],sql_re[3],sql_re[6],'dr',sql_re[0]
+            temp=[sql_re[1],sql_re[11],sql_re[12],sql_re[2],sql_re[4],sql_re[3],sql_re[6],'dr',sql_re[0]]
             result.append(temp)
-            temp=sql_re[1],sql_re[11],sql_re[6],sql_re[2],sql_re[4],sql_re[3],sql_re[12],'cr',sql_re[0]
+            temp=[sql_re[1],sql_re[11],sql_re[6],sql_re[2],sql_re[4],sql_re[3],sql_re[12],'cr',sql_re[0]]
             result.append(temp)
             return result
     # type,日期，币种，手续费，银行金额，收款银行，账套，‘’，金额（字符型），客户,收款币种，合同号，b.excelserverrcid
     def bank_receive(self,sql_re,unit):
         if sql_re[6]==unit:
             result=[]
-            temp=sql_re[1],sql_re[11],sql_re[5],sql_re[2],sql_re[4],sql_re[4],sql_re[9],'dr',sql_re[0]
+            temp=[sql_re[1],sql_re[11],sql_re[5],sql_re[2],sql_re[4],sql_re[4],sql_re[9],'dr',sql_re[0]]
             result.append(temp)
-            temp=sql_re[1],'续费',sql_re[5],sql_re[2],sql_re[3],sql_re[3],sql_re[9],'dr',sql_re[0]
+            temp=[sql_re[1],'续费',sql_re[5],sql_re[2],sql_re[3],sql_re[3],sql_re[9],'dr',sql_re[0]]
             result.append(temp)
-            temp=sql_re[1],sql_re[11],sql_re[9],sql_re[2],sql_re[8],sql_re[8],sql_re[5],'cr',sql_re[0]
+            temp=[sql_re[1],sql_re[11],sql_re[9],sql_re[2],sql_re[8],sql_re[8],sql_re[5],'cr',sql_re[0]]
             result.append(temp)
             return result
 
@@ -137,8 +137,8 @@ class Voucher():
         #print(sql_re[6]==unit)
         if sql_re[6]==unit:
             result=[]
-            temp=sql_re[1],sql_re[11],sql_re[5],sql_re[2],sql_re[4],sql_re[3],sql_re[8],'dr',sql_re[0]
+            temp=[sql_re[1],sql_re[11],sql_re[5],sql_re[2],sql_re[4],sql_re[3],sql_re[8],'dr',sql_re[0]]
             result.append(temp)
-            temp=sql_re[1],sql_re[11],sql_re[8],sql_re[2],sql_re[4],sql_re[3],sql_re[5],'cr',sql_re[0]
+            temp=[sql_re[1],sql_re[11],sql_re[8],sql_re[2],sql_re[4],sql_re[3],sql_re[5],'cr',sql_re[0]]
             result.append(temp)
             return result
