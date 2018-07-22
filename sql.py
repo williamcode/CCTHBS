@@ -95,9 +95,9 @@ class Voucher():
         
         if sql_re[6]==unit or sql_re[9]==unit:
             result=[]
-            temp= [sql_re[1],sql_re[11],sql_re[5] if sql_re[6]==unit else sql_re[6],sql_re[7],sql_re[4],sql_re[3],sql_re[8] if sql_re[9]==unit else sql_re[9],'dr',sql_re[0]]
+            temp= [sql_re[1],sql_re[11],sql_re[5] if sql_re[6]==unit else sql_re[6],sql_re[7],sql_re[4],sql_re[3],sql_re[8] if sql_re[9]==unit else sql_re[9],'dr'+ ('r' if sql_re[6]==unit else  'p'),sql_re[0]]
             result.append(temp)
-            temp= [sql_re[1],sql_re[11],sql_re[8] if sql_re[9]==unit else sql_re[9],sql_re[10],sql_re[4],sql_re[3],sql_re[5] if sql_re[6]==unit else sql_re[6],'cr',sql_re[0]]
+            temp= [sql_re[1],sql_re[11],sql_re[8] if sql_re[9]==unit else sql_re[9],sql_re[10],sql_re[4],sql_re[3],sql_re[5] if sql_re[6]==unit else sql_re[6],'cr'+('r' if sql_re[6]==unit else  'p'),sql_re[0]]
             result.append(temp)
 
             return result
@@ -124,11 +124,12 @@ class Voucher():
     def bank_receive(self,sql_re,unit):
         if sql_re[6]==unit:
             result=[]
-            temp=[sql_re[1],sql_re[11],sql_re[5],sql_re[2],sql_re[4],sql_re[4],sql_re[9],'dr',sql_re[0]]
+            temp=[sql_re[1],sql_re[11],sql_re[5],sql_re[2],sql_re[4]  if sql_re[2]=="CNY" else 0 ,0 if sql_re[2]=="CNY" else sql_re[4],sql_re[9],'dr',sql_re[0]]
             result.append(temp)
-            temp=[sql_re[1],'续费',sql_re[5],sql_re[2],sql_re[3],sql_re[3],sql_re[9],'dr',sql_re[0]]
-            result.append(temp)
-            temp=[sql_re[1],sql_re[11],sql_re[9],sql_re[2],sql_re[8],sql_re[8],sql_re[5],'cr',sql_re[0]]
+            if float(sql_re[3])!=0:
+                temp=[sql_re[1],'手续费',sql_re[5],sql_re[2],sql_re[3] if sql_re[2]=="CNY" else 0 ,0 if sql_re[2]=="CNY" else sql_re[3],sql_re[9],'dr',sql_re[0]]
+                result.append(temp)
+            temp=[sql_re[1],sql_re[11],sql_re[9],sql_re[2],sql_re[8] if sql_re[2]=="CNY" else 0,0 if sql_re[2]=="CNY" else sql_re[8],sql_re[5],'cr',sql_re[0]]
             result.append(temp)
             return result
 
